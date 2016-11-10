@@ -35,7 +35,7 @@ function JmlMenu () {
     //store menu elements
     var menu = { 
       depth : 0, // nesting count
-      position : [-1], //position array
+      position : [-1], // position array
       element : {} 
     };       
     menu = processul(mainul[0], menu);     
@@ -134,16 +134,16 @@ JmlMenu.prototype = {
   constructor : JmlMenu,
   
   hover : function (event, style) {
-    if (this.menuelements[('K'+ event.target.dataset.position)] && 
-        this.menuelements[('K'+ event.target.dataset.position)].ul &&
+    if (this.menuelements.hasOwnProperty(('K'+ event.target.dataset.position)) && 
+        this.menuelements[('K'+ event.target.dataset.position)].hasOwnProperty('ul') &&
         this.currentlyopen.length < event.target.dataset.position.length) {
-
       this.menuelements[('K'+ event.target.dataset.position)].ul.style.display = style;
     }
   },
   
   click : function (event) {    
-    if (this.menuelements[('K'+ event.target.dataset.position)] && this.menuelements[('K'+ event.target.dataset.position)].ul) {
+    if (this.menuelements.hasOwnProperty(('K'+ event.target.dataset.position)) && 
+        this.menuelements[('K'+ event.target.dataset.position)].hasOwnProperty('ul')) {
       this.currentlyopen =  this.openmenu(event.target.dataset.position);   
     }
   },
@@ -167,19 +167,18 @@ JmlMenu.prototype = {
         isopenlevel = i > 0 ? isopenlevel += ('-' + isopen[i]) : isopenlevel += (isopen[i]);
        } else {
          isopenlevel = '';
-       }
-       
+       }       
        if (toopenlevel !== isopenlevel) { // close old level, open new
          if (isopenlevel.length > 0) this.menuelements[('K'+ isopenlevel)].ul.style.display = 'none';
          if (toopenlevel.length > 0) this.menuelements[('K'+ toopenlevel)].ul.style.display = 'block';         
        } else { // toogle
         if (i === depth -1 && isopenlevel.length > 0) { 
-          if(this.menuelements[('K'+ isopenlevel)].ul.style.display === 'none') {
-            this.menuelements[('K'+ isopenlevel)].ul.style.display = 'block';
-          } else {
+          if(this.menuelements[('K'+ isopenlevel)].ul.style.display === 'block') {
             this.menuelements[('K'+ isopenlevel)].ul.style.display = 'none';
             toopen.pop();
             ret = toopen.join('-');
+          } else {
+            this.menuelements[('K'+ isopenlevel)].ul.style.display = 'block';
           }
         }}               
     }
